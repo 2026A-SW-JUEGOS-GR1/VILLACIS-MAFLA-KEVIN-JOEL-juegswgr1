@@ -29,6 +29,9 @@ export default class GameScene extends Phaser.Scene {
         // Derecha
         this.load.image('fox_der_1', 'Tilesets/fox/Fox caminar derecha 1.png');
         this.load.image('fox_der_2', 'Tilesets/fox/Fox caminar derecha 2.png');
+        
+        // Cargar música de juego
+        this.load.audio('play_song', 'Tilesets/songs/playsong.mp3');
     }
 
     create() {
@@ -52,6 +55,12 @@ export default class GameScene extends Phaser.Scene {
             [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1],
             [1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1],
             [1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1],
+            [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+            [1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         ];
 
@@ -85,7 +94,7 @@ export default class GameScene extends Phaser.Scene {
         }
 
         // 2. Crear al jugador con sprite animado
-        this.player = this.add.sprite(150, 150, 'fox_frente_1');
+        this.player = this.add.sprite(176, 80, 'fox_frente_1');
         this.player.setDisplaySize(48, 48);
         this.player.setOrigin(0.5);
         
@@ -110,7 +119,7 @@ export default class GameScene extends Phaser.Scene {
         this.createApples();
 
         // 4. Crear la madriguera (zona de meta)
-        this.burrow = this.add.image(24 * tileSize + tileSize / 2, 13 * tileSize + tileSize / 2, 'hoyo');
+        this.burrow = this.add.image(24 * tileSize + tileSize / 2, 19 * tileSize + tileSize / 2, 'hoyo');
         this.burrow.setOrigin(0.5).setDisplaySize(tileSize, tileSize);
         this.physics.add.existing(this.burrow, true); // Static para no afectar física
 
@@ -131,6 +140,17 @@ export default class GameScene extends Phaser.Scene {
         this.scene.launch('UIScene');
         this.events.emit('updateScore', this.score);
         this.events.emit('updateLives', this.player.lives);
+
+        // 8.5 Reproducir música de juego
+        const introSong = this.sound.get('intro_song');
+        if (introSong && introSong.isPlaying) {
+            introSong.stop();
+        }
+        
+        const playSong = this.sound.get('play_song');
+        if (!playSong || !playSong.isPlaying) {
+            this.sound.play('play_song', { loop: true, volume: 0.7 });
+        }
 
         // 9. Temporizador
         this.timer = 90; // 90 segundos
@@ -270,13 +290,16 @@ export default class GameScene extends Phaser.Scene {
 
         this.timerEvent.remove(); // Detener timer
         
+        // Detener TODAS las canciones
+        this.sound.stopAll();
+        
         // Detener UIScene
         this.scene.sleep('UIScene');
         
         if (isVictory) {
-            this.scene.start('VictoryScene', { score: this.score });
+            this.scene.start('VictoryScene', { score: this.score, time: this.timer });
         } else {
-            this.scene.start('GameOverScene', { score: this.score });
+            this.scene.start('GameOverScene', { score: this.score, time: this.timer });
         }
     }
 

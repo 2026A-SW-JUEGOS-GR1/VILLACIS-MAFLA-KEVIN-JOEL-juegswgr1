@@ -6,24 +6,30 @@ export default class UIScene extends Phaser.Scene {
     create() {
         const { width, height } = this.scale;
 
-        // Crear textos para el HUD
-        this.scoreText = this.add.text(20, 20, 'MANZANAS: 0', {
+        // ===== HUD HORIZONTAL EN LA PARTE SUPERIOR =====
+        const hudY = 15;
+        const spacing = 200;
+
+        // Manzanas (izquierda)
+        this.scoreText = this.add.text(20, hudY, 'MANZANAS: 0', {
             fontSize: '20px',
             fill: '#ffffff',
             fontStyle: 'bold'
         });
 
-        this.livesText = this.add.text(width / 2, 20, 'VIDAS: ❤️❤️❤️', {
+        // Vidas (centro)
+        this.livesText = this.add.text(20 + spacing, hudY, 'VIDAS: ❤️❤️❤️', {
             fontSize: '20px',
             fill: '#ff6b6b',
             fontStyle: 'bold'
-        }).setOrigin(0.5, 0);
+        });
 
-        this.timerText = this.add.text(width - 20, 20, 'TIEMPO: 60', {
+        // Tiempo (derecha)
+        this.timerText = this.add.text(20 + spacing * 2, hudY, 'TIEMPO: 90', {
             fontSize: '20px',
             fill: '#ffffff',
             fontStyle: 'bold'
-        }).setOrigin(1, 0);
+        });
 
         // Obtener la escena del juego para escuchar sus eventos
         const gameScene = this.scene.get('GameScene');

@@ -3,29 +3,54 @@ export default class GameOverScene extends Phaser.Scene {
         super('GameOverScene');
     }
 
+    preload() {
+        // Cargar fondo de cierre
+        this.load.image('fondo_cierre', 'Tilesets/ventana inicio y fin/fondo cierre.png');
+    }
+
     create(data) {
         const { width, height } = this.scale;
 
-        this.add.text(width / 2, height / 2 - 100, '¡El Gigante te atrapó!', {
+        // Agregar fondo de cierre
+        this.add.image(width / 2, height / 2, 'fondo_cierre')
+            .setOrigin(0.5)
+            .setDisplaySize(width, height);
+
+        this.add.text(width / 2, height / 2 - 100, '¡El Granjero te atrapó!', {
             fontSize: '32px',
             fill: '#ff0000',
-            fontStyle: 'bold'
+            fontStyle: 'bold',
+            stroke: '#000000',
+            strokeThickness: 3
         }).setOrigin(0.5);
 
-        this.add.text(width / 2, height / 2, `Manzanas recolectadas: ${data.score}`, {
-            fontSize: '24px',
-            fill: '#dddddd'
+        this.add.text(width / 2, height / 2 - 20, `Manzanas recolectadas: ${data.score}`, {
+            fontSize: '26px',
+            fill: '#ffff00',
+            fontStyle: 'bold',
+            stroke: '#000000',
+            strokeThickness: 3
+        }).setOrigin(0.5);
+
+        this.add.text(width / 2, height / 2 + 20, `Tiempo restante: ${data.time}s`, {
+            fontSize: '26px',
+            fill: '#ffff00',
+            fontStyle: 'bold',
+            stroke: '#000000',
+            strokeThickness: 3
         }).setOrigin(0.5);
 
         // Zona interactiva - Intentar de nuevo
-        const tryAgainZone = this.add.zone(width / 2, height / 2 + 100, 300, 60).setOrigin(0.5);
+        const tryAgainZone = this.add.zone(width / 2, height / 2 + 120, 300, 60).setOrigin(0.5);
         tryAgainZone.setInteractive();
 
-        const tryAgainButton = this.add.text(width / 2, height / 2 + 100, 'Intentar de nuevo', {
+        const tryAgainButton = this.add.text(width / 2, height / 2 + 120, 'Intentar de nuevo', {
             fontSize: '24px',
             fill: '#00ff00',
-            backgroundColor: '#000000',
-            padding: { x: 20, y: 10 }
+            backgroundColor: '#00000055',
+            padding: { x: 20, y: 10 },
+            stroke: '#ffffff',
+            strokeThickness: 1
         }).setOrigin(0.5);
 
         tryAgainZone.on('pointerup', () => {
@@ -35,14 +60,16 @@ export default class GameOverScene extends Phaser.Scene {
         tryAgainZone.on('pointerout', () => tryAgainButton.setFill('#00ff00'));
 
         // Zona interactiva - Menú principal
-        const menuZone = this.add.zone(width / 2, height / 2 + 160, 280, 60).setOrigin(0.5);
+        const menuZone = this.add.zone(width / 2, height / 2 + 190, 280, 60).setOrigin(0.5);
         menuZone.setInteractive();
 
-        const menuButton = this.add.text(width / 2, height / 2 + 160, 'Menú principal', {
+        const menuButton = this.add.text(width / 2, height / 2 + 190, 'Menú principal', {
             fontSize: '24px',
             fill: '#00aaff',
-            backgroundColor: '#000000',
-            padding: { x: 20, y: 10 }
+            backgroundColor: '#00000055',
+            padding: { x: 20, y: 10 },
+            stroke: '#ffffff',
+            strokeThickness: 1
         }).setOrigin(0.5);
 
         menuZone.on('pointerup', () => {
