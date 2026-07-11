@@ -1,0 +1,11 @@
+Model Information:
+* title:	Batman Origins Suit - Textured and Rigged
+* source:	https://sketchfab.com/3d-models/batman-origins-suit-textured-and-rigged-ce83e407d259482c9ba284bced828933
+* author:	Light.k (https://sketchfab.com/Light.k)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Batman Origins Suit - Textured and Rigged" (https://sketchfab.com/3d-models/batman-origins-suit-textured-and-rigged-ce83e407d259482c9ba284bced828933) by Light.k (https://sketchfab.com/Light.k) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
